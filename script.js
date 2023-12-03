@@ -73,35 +73,26 @@ if (locationInfoElement && mapElement && weatherDataElement) {
 // Additional weather-related functionality goes here
 
 // Example: Fetching weather data
-async function fetchWeatherData(latitude, longitude) {
+function fetchWeatherData(latitude, longitude) {
     // Replace the following API key with your Weatherstack API key
     const apiKey = 'f356044ebb1fd76e30c491e112eb5093';
     const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${latitude},${longitude}`;
 
-   try{
-    let response = await fetch(apiUrl);
-    let data = await response.json();
-   console.log(data);
-    displayWeatherData(data);
-   }
-   catch(error){
-    console.error(`Error fetching weather data: ${error.message}`);
-   }
-    // fetch(apiUrl)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         console.log("Weatherstack API Response:", data);
-    //         displayWeatherData(data);
-    //     })
-    //     .catch(error => console.error(`Error fetching weather data: ${error.message}`));
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Weatherstack API Response:", data);
+            displayWeatherData(data);
+        })
+        .catch(error => console.error(`Error fetching weather data: ${error.message}`));
 }
 
 // Example: Displaying weather data
 function displayWeatherData(data) {
-    if (data && data.current) {
+    
         const location = data.location.name;
         const temperature = data.current.temperature;
-        
+        const description = data.current.weather_descriptions[0];
         const windSpeed = data.current.wind_speed;
         const humidity = data.current.humidity;
         const pressure = data.current.pressure;
@@ -122,13 +113,11 @@ function displayWeatherData(data) {
             <div class="weather-item">Wind Direction: ${windDirection}</div>
             <div class="weather-item">UV Index: ${uvIndex}</div>
             <div class="weather-item">Feels like: ${temperature} &deg;</div>
-          
+            <div class="weather-item">Description: ${description}</div>
             <div class="weather-item">Current Time: ${currentTime}</div>
         `;
 
         // Show the weather data element
         weatherDataElement.classList.remove('hidden');
-    } else {
-        console.error("Invalid or unexpected API response format.");
-    }
+    
 }
