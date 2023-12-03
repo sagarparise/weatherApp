@@ -78,7 +78,6 @@ function fetchWeatherData(latitude, longitude) {
     const apiKey = 'f356044ebb1fd76e30c491e112eb5093';
     const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${latitude},${longitude}`;
 
-
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
@@ -93,6 +92,7 @@ function displayWeatherData(data) {
     if (data && data.current) {
         const location = data.location.name;
         const temperature = data.current.temperature;
+        const description = data.current.weather_descriptions[0];
         const windSpeed = data.current.wind_speed;
         const humidity = data.current.humidity;
         const pressure = data.current.pressure;
@@ -113,6 +113,7 @@ function displayWeatherData(data) {
             <div class="weather-item">Wind Direction: ${windDirection}</div>
             <div class="weather-item">UV Index: ${uvIndex}</div>
             <div class="weather-item">Feels like: ${temperature} &deg;</div>
+          
             <div class="weather-item">Current Time: ${currentTime}</div>
         `;
 
