@@ -73,18 +73,27 @@ if (locationInfoElement && mapElement && weatherDataElement) {
 // Additional weather-related functionality goes here
 
 // Example: Fetching weather data
-function fetchWeatherData(latitude, longitude) {
+async function fetchWeatherData(latitude, longitude) {
     // Replace the following API key with your Weatherstack API key
     const apiKey = 'f356044ebb1fd76e30c491e112eb5093';
     const apiUrl = `http://api.weatherstack.com/current?access_key=${apiKey}&query=${latitude},${longitude}`;
 
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Weatherstack API Response:", data);
-            displayWeatherData(data);
-        })
-        .catch(error => console.error(`Error fetching weather data: ${error.message}`));
+   try{
+    let response = await fetch(apiUrl);
+    let data = await response.json();
+   console.log(data);
+    displayWeatherData(data);
+   }
+   catch(error){
+    console.error(`Error fetching weather data: ${error.message}`);
+   }
+    // fetch(apiUrl)
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log("Weatherstack API Response:", data);
+    //         displayWeatherData(data);
+    //     })
+    //     .catch(error => console.error(`Error fetching weather data: ${error.message}`));
 }
 
 // Example: Displaying weather data
@@ -92,7 +101,7 @@ function displayWeatherData(data) {
     if (data && data.current) {
         const location = data.location.name;
         const temperature = data.current.temperature;
-        const description = data.current.weather_descriptions[0];
+        
         const windSpeed = data.current.wind_speed;
         const humidity = data.current.humidity;
         const pressure = data.current.pressure;
